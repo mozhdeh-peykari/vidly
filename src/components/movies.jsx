@@ -9,7 +9,8 @@ constructor(){
 }
   state = {
     movies : getMovies(),
-    pageSize : 4
+    pageSize : 4,
+    currentPage: 1
 };
 
 handleDelete = movie => {
@@ -36,20 +37,8 @@ getLength = () => {
     }
 }
 
-// handlePageNum = num => {
-//     const startIndex = num * 4;
-//     const endIndex = startIndex + 4;
-
-//     const m1 = this.state.movies;
-//     const m2 = m1.slice(startIndex,endIndex);
-
-//     console.log(num);
-
-//     this.setState({movies: m2});
-// }
-
 handlePageChange = page => {
-    console.log(page);
+    this.setState({currentPage: page})
 }
 
 render(){
@@ -84,7 +73,7 @@ render(){
                 <td>
                     <button type="button" className="btn btn-danger" 
                         onClick={() => this.handleDelete(m)}>
-                    Delete
+                        Delete
                     </button>
                 </td>
             </tr>)}
@@ -93,14 +82,11 @@ render(){
 
 
 <Pagination 
-// totalPages={this.state.movies.length / 4} 
-// activePageNum={1} 
-// onClick={() => this.handlePageNum(0)}
-itemsCount={count}
-pageSize={this.state.pageSize}
-onPageChange={this.handlePageChange}
+    itemsCount={count}
+    pageSize={this.state.pageSize}
+    onPageChange={this.handlePageChange}
+    currentPage={this.state.currentPage}
 >
-    
 </Pagination>
 
 </div>     
