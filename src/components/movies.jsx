@@ -85,7 +85,7 @@ render(){
 
 
 <Pagination 
-    itemsCount="abc"
+    itemsCount={count}
     pageSize={this.state.pageSize}
     onPageChange={this.handlePageChange}
     currentPage={this.state.currentPage}
