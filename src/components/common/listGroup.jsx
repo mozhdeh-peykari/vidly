@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 
 const ListGroup = (props) =>{
-    const{items, onItemSelect, currentFilterId} = props;
+    const{items, textProperty, valueProperty, onItemSelect, currentFilterId} = props;
     console.log(currentFilterId);
 
     return (
@@ -13,10 +13,10 @@ const ListGroup = (props) =>{
             </li>
 
             {items.map(x => 
-                (<li key={x._id} 
+                (<li key={x[valueProperty]} 
                     className={x._id === currentFilterId ? "list-group-item active" : "list-group-item"} 
-                    onClick={() => onItemSelect(x._id)}>
-                        {x.name}
+                    onClick={() => onItemSelect(x[valueProperty])}>
+                        {x[textProperty]}
                  </li>)
                 )}
         </ul>);
