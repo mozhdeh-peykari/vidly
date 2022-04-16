@@ -8,7 +8,7 @@ import {
 import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
-import Filtering from "./common/filtering";
+import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 import { filter } from "../utils/filter";
 
@@ -17,12 +17,16 @@ export class Movies extends Component {
     super();
   }
   state = {
-    movies: getMovies(),
+    movies: [],
+    genres: [],
     pageSize: 4,
     currentPage: 1,
-    genres: getGenres(),
     currentGenreId: -1
   };
+
+  componentDidMount(){
+      this.setState({movies: getMovies(), genres: getGenres()});
+  }
 
   handleDelete = (movie) => {
     deleteMovie(movie._id);
@@ -49,7 +53,7 @@ export class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleFilterChange = (genreId) => {
+  handleGenreSelect = (genreId) => {
       this.setState({currentGenreId: genreId});
   };
 
@@ -62,13 +66,13 @@ export class Movies extends Component {
     return (
       <div className="mt-5 row">
           <div className="col-2">
-              <Filtering
+              <ListGroup
                 items={this.state.genres}
-                onFilterChange={this.handleFilterChange}
+                onItemSelect={this.handleGenreSelect}
                 currentFilterId={this.state.currentGenreId}
               >
 
-              </Filtering>
+              </ListGroup>
           </div>
           <div className="col-10">
         {this.getLength()}
