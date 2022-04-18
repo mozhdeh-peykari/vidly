@@ -10,7 +10,6 @@ import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
-import { filter } from "../utils/filter";
 
 export class Movies extends Component {
   constructor() {
@@ -20,12 +19,12 @@ export class Movies extends Component {
     movies: [],
     genres: [],
     pageSize: 4,
-    currentPage: 1,
-    currentGenreId: -1
+    currentPage: 1
   };
 
   componentDidMount(){
-      this.setState({movies: getMovies(), genres: getGenres()});
+    const genres = [{ name: "All Movies" }, ...getGenres()];
+    this.setState({movies: getMovies(), genres });
   }
 
   handleDelete = (movie) => {
@@ -53,31 +52,35 @@ export class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleGenreSelect = (genreId) => {
-      this.setState({currentGenreId: genreId});
+  handleGenreSelect = (genre) => {
+      this.setState({selectedGenre: genre, currentPage: 1});
   };
 
   render() {
-    //const { length: count } = this.state.movies;
-    const { movies: allMovies, currentPage, pageSize, currentGenreId } = this.state;
-    const filterdMovies = filter(allMovies, currentGenreId);
-    const count = filterdMovies.length;
-    const movies = paginate(filterdMovies, currentPage, pageSize);
+    const { length: count } = this.state.movies;
+    const { movies: allMovies, currentPage, pageSize, selectedGenre } = this.state;
+    const filteredMovies = selectedGenre && selectedGenre._id ? allMovies.filter(x => x.genre._id === selectedGenre._id) : allMovies;
+    //const count = filterdMovies.length;
+    const movies = paginate(filteredMovies, currentPage, pageSize);
+
+    if (filteredMovies.length === 0) {
+      return <p>There are no items in the table</p>;
+    }
+
+    else{
     return (
       <div className="mt-5 row">
           <div className="col-2">
               <ListGroup
                 items={this.state.genres}
-                textProperty={"name"}
-                valueProperty={"_id"}
                 onItemSelect={this.handleGenreSelect}
-                currentFilterId={this.state.currentGenreId}
+                selectedItem={this.state.selectedGenre}
               >
 
               </ListGroup>
           </div>
           <div className="col-10">
-        {this.getLength()}
+          <p>Showing {filteredMovies.length} items in the database</p>
         <table className="table">
           <thead>
             <tr>
@@ -117,7 +120,7 @@ export class Movies extends Component {
         </table>
 
         <Pagination
-          itemsCount={count}
+          itemsCount={filteredMovies.length}
           pageSize={this.state.pageSize}
           onPageChange={this.handlePageChange}
           currentPage={this.state.currentPage}
@@ -125,6 +128,7 @@ export class Movies extends Component {
         </div>
       </div>
     );
+            }
   }
 }
 
