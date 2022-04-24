@@ -2,7 +2,6 @@ import React, { Component, createContext } from 'react';
 
 const ListGroup = (props) =>{
     const{items, textProperty, valueProperty, onItemSelect, selectedItem} = props;
-    console.log(selectedItem);
 
     return (
         <ul className="list-group">
