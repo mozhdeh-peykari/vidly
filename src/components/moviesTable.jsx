@@ -11,8 +11,8 @@ class MoviesTable extends Component {
    {path: 'genre.name', title: 'Genre'},
    {path: 'numberInStock', title: 'Stock'},
    {path: 'dailyRentalRate', title: 'Rate'},
-   {key: 'like'},
-   {key: 'delete'}
+   {key: 'like', content: movie => <Like onClick={() => this.props.onLike(movie)} liked={movie.liked}></Like>},
+   {key: 'delete', content: movie => <button type="button" className="btn btn-danger" onClick={() => this.props.onDelete(movie)}>Delete</button>}
  ]
 
     const { movies, onDelete, onLike, onSort, sortColumn } = this.props;
@@ -24,35 +24,10 @@ class MoviesTable extends Component {
       onSort={onSort}
       sortColumn={sortColumn}
       />
-    {/* <TableBody
+    <TableBody
       data={movies}
       columns={columns}
-      /> */}
-    <tbody>
-      {movies.map((m) => (
-        <tr key={m._id}>
-          <td key={m.title}>{m.title}</td>
-          <td key={m.genre.name}>{m.genre.name}</td>
-          <td key={m.numberInStock}>{m.numberInStock}</td>
-          <td key={m.dailyRentalRate}>{m.dailyRentalRate}</td>
-          <td>
-            <Like
-              onClick={() => onLike(m)}
-              liked={m.liked}
-            ></Like>
-          </td>
-          <td>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={() => onDelete(m)}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
+      />
   </table> );
 
   }
